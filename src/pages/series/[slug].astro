@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Photo from '../../components/Photo.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import {albums} from '../../data/photos';
+import {url} from '../../data/site';
+export function getStaticPaths(){return albums.map((album,i)=>({params:{slug:album.slug},props:{album,i}}))}
+const {album,i}=Astro.props;const next=albums[(i+1)%albums.length];
+---
+<Layout title={album.title} description={album.description}>
+<a class="back-link" href={url()}>← 全部系列</a>
+<header class="series-header"><p class="eyebrow">SERIES {String(i+1).padStart(2,'0')} / {album.titleEn}</p><h1>{album.title}</h1><p class="series-description">{album.description}</p><p class="series-details">{album.location}<span>·</span>{album.photos.length} 张照片<span>·</span>{album.demo?'示例系列':album.year}</p></header>
+{album.demo&&<p class="demo-note series-demo">本组为版式测试样片，非站主作品；每张照片均附原作者与来源。</p>}
+<div class="series-photos">{album.photos.map((photo,index)=><Photo photo={photo} eager={index===0} index={index}/>)}</div>
+<a class="next-series" href={url(`series/${next.slug}/`)}><span class="eyebrow">NEXT SERIES</span><span>{next.title} <span>→</span></span></a>
+<Lightbox/>
+</Layout>

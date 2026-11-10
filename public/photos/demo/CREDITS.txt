@@ -1,0 +1,33 @@
+DEMONSTRATION PHOTOGRAPHS
+
+These photographs demonstrate the blog's gallery layout. They are not works
+by the blog owner. All six source pages identified the images as free to use
+under the Unsplash License when checked on 2026-11-10.
+License: https://unsplash.com/license
+Album years follow source publication years, not the owner's travel history.
+
+ocean-clouds-800.webp / ocean-clouds-1600.webp — Polina Kuzovkova
+https://unsplash.com/photos/clouds-drift-over-a-calm-ocean-at-dusk-bOkzddPlNH0
+https://images.unsplash.com/photo-1770802238221-87ba9c7ff11b
+
+ocean-dusk-800.webp / ocean-dusk-1600.webp — Gaku Suyama
+https://unsplash.com/photos/calm-ocean-waves-on-a-sandy-beach-at-dusk-erEzONu9nwU
+https://images.unsplash.com/photo-1771931862880-ae7cf2692683
+
+city-day-800.webp / city-day-1600.webp — Annie Spratt
+https://unsplash.com/photos/new-york-city-street-and-skyscrapers-snPgtR7PqZc
+https://images.unsplash.com/photo-1793268840037-a3597f938978
+
+city-night-800.webp / city-night-1600.webp — Andre Benz
+https://unsplash.com/photos/person-in-grey-raincoat-and-orange-car-crossing-the-intersection-lQTf_EUo6Fk
+https://images.unsplash.com/photo-1541702467897-41915a07d3a7
+
+mountain-layers-800.webp / mountain-layers-1600.webp — simon (@simon_berger)
+https://unsplash.com/photos/foggy-mountains-yWLzoFf0u0I
+https://images.unsplash.com/photo-1541405756638-f978d7a92fc0
+
+mountain-mist-800.webp / mountain-mist-1600.webp — Taneli Lahtinen
+https://unsplash.com/photos/photography-of-foggy-mountain-dPltbmKuHmk
+https://images.unsplash.com/photo-1532592950061-606f15b31037
+
+Encoded from the downloaded source JPEGs as WebP, quality 80, with 800px and 1600px longest-edge variants. Original aspect ratios retained. Variant pixel dimensions are recorded in src/data/albums.json.

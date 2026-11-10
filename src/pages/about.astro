@@ -1,0 +1,5 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {site,url} from '../data/site';
+---
+<Layout title="关于" active="about"><header class="collection-header"><div><p class="eyebrow">BEHIND THE FRAMES</p><h1>你好，我是 Sutton。</h1><p class="lede">这里收集照片，也收集日常。</p></div></header><article class="prose"><p class="about-intro">去一些地方，拍一些照。<br/>把路过的风景，留成可以翻阅的记忆。</p><p>这是一本持续更新的摄影集，也是我的个人博客。照片按系列整理；没有装进相机的片段，就留在文字里。</p><p>现在先用几组有出处的示例照片布置这个空间。它们用于测试版式，作品版权属于各自的摄影师。之后，这里会慢慢换成自己的照片。</p><h2>保持联系</h2><p><a href={site.github} target="_blank" rel="noreferrer">GitHub ↗</a> &nbsp; / &nbsp; <a href={`mailto:${site.email}`}>Email ↗</a></p><h2>这个站点</h2><p>用 Astro 构建。摄影集的留白与阅读节奏，参考了 <a href="https://yiwang.photography" target="_blank" rel="noreferrer">yi.wang photography</a>。照片与文字，会在这里继续生长。</p><p><a href={url('links/')}>友情链接 ↗</a></p></article></Layout>
