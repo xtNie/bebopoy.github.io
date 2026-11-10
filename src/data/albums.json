@@ -1,0 +1,179 @@
+[
+  {
+    "slug": "blue-hour",
+    "title": "入夜之前",
+    "titleEn": "Before the night",
+    "description": "天空慢慢暗下来，海面还留着最后一点光。这组为排版示例，照片由 Unsplash 摄影师提供，并非博主作品。",
+    "location": "海岸 · 作品示例",
+    "category": "海岸",
+    "year": 2026,
+    "demo": true,
+    "cover": "ocean-clouds",
+    "photos": [
+      {
+        "id": "ocean-clouds",
+        "src": "/photos/demo/ocean-clouds-1600.webp",
+        "alt": "傍晚的云层铺满浅蓝色天空，海浪涌向岩石海岸",
+        "width": 1600,
+        "height": 1067,
+        "credit": {
+          "name": "Polina Kuzovkova",
+          "url": "https://unsplash.com/photos/clouds-drift-over-a-calm-ocean-at-dusk-bOkzddPlNH0"
+        },
+        "variants": [
+          {
+            "src": "/photos/demo/ocean-clouds-800.webp",
+            "width": 800,
+            "height": 533
+          },
+          {
+            "src": "/photos/demo/ocean-clouds-1600.webp",
+            "width": 1600,
+            "height": 1067
+          }
+        ]
+      },
+      {
+        "id": "ocean-dusk",
+        "src": "/photos/demo/ocean-dusk-1600.webp",
+        "alt": "暮色中的沙滩与浪花，远山呈剪影，天空从青蓝渐变为柔和的粉色",
+        "width": 1067,
+        "height": 1600,
+        "credit": {
+          "name": "Gaku Suyama",
+          "url": "https://unsplash.com/photos/calm-ocean-waves-on-a-sandy-beach-at-dusk-erEzONu9nwU"
+        },
+        "variants": [
+          {
+            "src": "/photos/demo/ocean-dusk-800.webp",
+            "width": 533,
+            "height": 800
+          },
+          {
+            "src": "/photos/demo/ocean-dusk-1600.webp",
+            "width": 1067,
+            "height": 1600
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "city-walks",
+    "title": "城市的间隙",
+    "titleEn": "Between city moments",
+    "description": "沿着街道看向远处，也停在一个等灯的路口。这组为排版示例，照片由 Unsplash 摄影师提供，并非博主作品。",
+    "location": "纽约 · 作品示例",
+    "category": "街头",
+    "year": 2026,
+    "demo": true,
+    "cover": "city-day",
+    "photos": [
+      {
+        "id": "city-day",
+        "src": "/photos/demo/city-day-1600.webp",
+        "alt": "纽约的砖砌街区沿道路延伸，远处是世贸中心一号楼与高层建筑",
+        "width": 1073,
+        "height": 1600,
+        "credit": {
+          "name": "Annie Spratt",
+          "url": "https://unsplash.com/photos/new-york-city-street-and-skyscrapers-snPgtR7PqZc"
+        },
+        "variants": [
+          {
+            "src": "/photos/demo/city-day-800.webp",
+            "width": 537,
+            "height": 800
+          },
+          {
+            "src": "/photos/demo/city-day-1600.webp",
+            "width": 1073,
+            "height": 1600
+          }
+        ]
+      },
+      {
+        "id": "city-night",
+        "src": "/photos/demo/city-night-1600.webp",
+        "alt": "纽约雨夜的路口，行人与黄色出租车穿过霓虹灯映亮的湿润街道",
+        "width": 1067,
+        "height": 1600,
+        "credit": {
+          "name": "Andre Benz",
+          "url": "https://unsplash.com/photos/person-in-grey-raincoat-and-orange-car-crossing-the-intersection-lQTf_EUo6Fk"
+        },
+        "variants": [
+          {
+            "src": "/photos/demo/city-night-800.webp",
+            "width": 533,
+            "height": 800
+          },
+          {
+            "src": "/photos/demo/city-night-1600.webp",
+            "width": 1067,
+            "height": 1600
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "mountain-air",
+    "title": "山的另一边",
+    "titleEn": "Beyond the mountains",
+    "description": "山脊在雾中若隐若现，树木接住一束晨光。这组为排版示例，照片由 Unsplash 摄影师提供，并非博主作品。",
+    "location": "奥地利与挪威 · 作品示例",
+    "category": "山野",
+    "year": 2018,
+    "demo": true,
+    "cover": "mountain-layers",
+    "photos": [
+      {
+        "id": "mountain-layers",
+        "src": "/photos/demo/mountain-layers-1600.webp",
+        "alt": "奥地利湖畔的层叠山峰笼罩在薄雾里，近处岩壁上的树木被阳光照亮",
+        "width": 1233,
+        "height": 1600,
+        "credit": {
+          "name": "simon (@simon_berger)",
+          "url": "https://unsplash.com/photos/foggy-mountains-yWLzoFf0u0I"
+        },
+        "variants": [
+          {
+            "src": "/photos/demo/mountain-layers-800.webp",
+            "width": 617,
+            "height": 800
+          },
+          {
+            "src": "/photos/demo/mountain-layers-1600.webp",
+            "width": 1233,
+            "height": 1600
+          }
+        ]
+      },
+      {
+        "id": "mountain-mist",
+        "src": "/photos/demo/mountain-mist-1600.webp",
+        "alt": "低垂的云雾掠过挪威深绿色山谷，山坡上仍留有少量积雪",
+        "width": 1600,
+        "height": 1067,
+        "credit": {
+          "name": "Taneli Lahtinen",
+          "url": "https://unsplash.com/photos/photography-of-foggy-mountain-dPltbmKuHmk"
+        },
+        "variants": [
+          {
+            "src": "/photos/demo/mountain-mist-800.webp",
+            "width": 800,
+            "height": 533
+          },
+          {
+            "src": "/photos/demo/mountain-mist-1600.webp",
+            "width": 1600,
+            "height": 1067
+          }
+        ]
+      }
+    ]
+  }
+]

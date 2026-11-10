@@ -1,0 +1,6 @@
+---
+import Layout from '../../layouts/Layout.astro';import {posts} from '../../data/posts';import {url} from '../../data/site';
+export function getStaticPaths(){return posts.map(post=>({params:{slug:post.slug},props:{post}}))}
+const {post}=Astro.props;const Content=post.entry.Content;
+---
+<Layout title={post.title} active="journal"><a class="back-link" href={url('journal/')}>← 全部文字</a><header class="series-header"><p class="eyebrow">JOURNAL / {post.date.slice(0,10)}</p><h1>{post.title}</h1></header><article class="prose"><Content/></article></Layout>

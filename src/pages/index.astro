@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {albums,coverOf,recentPhotos} from '../data/photos';
+import {url,photoUrl} from '../data/site';
+const categories=[...new Set(albums.map(a=>a.category))];
+---
+<Layout>
+<header class="collection-header"><div><p class="eyebrow">A PERSONAL PHOTO JOURNAL</p><h1>去一些地方，拍一些照。</h1><p class="lede">留住路过的光，和那些不必言说的瞬间。</p></div><span class="edition">VOL. 01<br/>持续收集中</span></header>
+<div class="collection-tools"><div class="filters" role="group" aria-label="筛选摄影系列"><button class="active" data-filter="all" aria-pressed="true">全部系列 <sup>{albums.length}</sup></button>{categories.map(c=><button data-filter={c} aria-pressed="false">{c}</button>)}</div><span class="small-label">SELECTED SERIES / <span id="series-count">{String(albums.length).padStart(2,'0')}</span></span></div>
+<div class="album-grid">{albums.map((album,i)=>{const photo=coverOf(album);return <article class="album-card" data-category={album.category}><a href={url(`series/${album.slug}/`)} class="album-image"><img src={photoUrl(photo.src)} srcset={photo.variants?.map(v=>`${photoUrl(v.src)} ${v.width}w`).join(', ')} sizes="(max-width: 600px) calc(100vw - 48px), (max-width: 900px) 28vw, 23vw" alt={photo.alt} width={photo.width} height={photo.height} loading={i<2?'eager':'lazy'} fetchpriority={i===0?'high':'auto'}/><span class="album-open">浏览系列 ↗</span></a><div class="album-caption"><div><a href={url(`series/${album.slug}/`)}><h2>{album.title}</h2></a><span>{album.titleEn}</span></div><span class="album-meta">{String(album.photos.length).padStart(2,'0')} 张<br/>{album.demo?'示例系列':album.year}</span></div></article>})}</div>
+<section class="recent-section"><div class="section-heading"><div><p class="eyebrow">IN BETWEEN</p><h2>最近的几帧</h2></div><a href={url('recent/')}>查看全部 ↗</a></div><div class="filmstrip">{recentPhotos.slice(0,6).map(p=><a href={url(`series/${p.album.slug}/`)} aria-label={`${p.album.title}：${p.alt}`}><img src={photoUrl(p.variants?.[0]?.src || p.src)} alt={p.alt} width={p.width} height={p.height} loading="lazy"/></a>)}</div></section>
+{albums.some(a=>a.demo)&&<p class="demo-note">样片展览 · 示例照片用于测试摄影集版式，作者与来源见各系列。个人作品将持续更新。</p>}
+<script>const buttons=[...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];const cards=[...document.querySelectorAll<HTMLElement>('[data-category]')];buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button))});let count=0;cards.forEach(card=>{card.hidden=button.dataset.filter!=='all'&&card.dataset.category!==button.dataset.filter;if(!card.hidden)count++});document.querySelector('#series-count')!.textContent=String(count).padStart(2,'0')}));</script>
+</Layout>

@@ -1,16 +1,8 @@
-# Nuxt dev/build outputs
-.nuxt
-.output
-# Node dependencies
-node_modules
-# System files
-*.log
-# lock file
-pnpm-lock.yaml
-
-.nitro
-.cache
-.stylelintcache
-dist
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
 .DS_Store
-.vercel
+.playwright/

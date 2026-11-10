@@ -1,0 +1,6 @@
+---
+import Layout from '../layouts/Layout.astro';import {url} from '../data/site';
+export function getStaticPaths(){return ['blog','record','life','search','tags','projects'].map(legacy=>({params:{legacy}}))}
+const target=url(Astro.params.legacy==='projects'?'links/':'journal/');
+---
+<Layout title="旧页面已整理"><div class="prose"><p class="eyebrow">A NEW CHAPTER</p><h1>内容搬到新的一页了。</h1><p>旧博客的文字已收进新的目录。</p><a href={target}>继续阅读 →</a></div></Layout>
