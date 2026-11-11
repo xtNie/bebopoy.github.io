@@ -1,47 +1,71 @@
 ---
 import '../styles/global.css';
-import {site,url} from '../data/site';
-import {albums} from '../data/photos';
-interface Props {title?:string;description?:string;active?:string}
-const {title,description=site.description,active='series'}=Astro.props;
-const canonical=new URL(Astro.url.pathname,Astro.site);
+import { site, url } from '../data/site';
+interface Props { title?: string; description?: string; active?: string }
+const { title, description = site.description, active = 'series' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const links = [
+  { key: 'series', label: '摄影集', path: '' },
+  { key: 'recent', label: '近期', path: 'recent/' },
+  { key: 'journal', label: '文字', path: 'journal/' },
+  { key: 'about', label: '关于', path: 'about/' },
+];
 ---
 <!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>{title ? `${title} — ${site.name}` : site.title}</title>
-<meta name="description" content={description}/><meta name="theme-color" content="#f6f5f1"/>
-<link rel="canonical" href={canonical}/><link rel="icon" type="image/svg+xml" href={url('favicon.svg')}/>
-<meta property="og:title" content={title || site.title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/>
-<script is:inline>try{document.documentElement.dataset.theme=localStorage.getItem('photo-theme')||'light'}catch{}</script>
-</head>
-<body>
-<a class="skip-link" href="#main">跳到内容</a>
-<header class="mobile-header"><a class="wordmark" href={url()}>Sutton<span>photographs & notes</span></a><button id="menu-toggle" aria-label="打开导航" aria-expanded="false" aria-controls="sidebar"><span></span><span></span></button></header>
-<div class="menu-shade" id="menu-shade"></div>
-<aside class="sidebar" id="sidebar" aria-label="主导航">
-<a class="wordmark desktop-wordmark" href={url()}>Sutton<span>photographs & notes</span></a>
-<p class="sidebar-intro">光影与日常<br/><span>A journal, still unfolding.</span></p>
-<nav class="main-nav">
-<a class:list={[{selected:active==='series'}]} href={url()}><span>摄影集</span><small>Series</small></a>
-<div class="series-nav">{albums.map((album,i)=><a href={url(`series/${album.slug}/`)}><span class="series-number">{String(i+1).padStart(2,'0')}</span><span>{album.title}</span><sup>{album.photos.length}</sup></a>)}</div>
-<a class:list={[{selected:active==='recent'}]} href={url('recent/')}><span>近期</span><small>Recent</small></a>
-<a class:list={[{selected:active==='journal'}]} href={url('journal/')}><span>文字</span><small>Journal</small></a>
-<a class:list={[{selected:active==='about'}]} href={url('about/')}><span>关于</span><small>About</small></a>
-</nav>
-<div class="sidebar-bottom"><p>去一些地方，拍一些照。</p><div class="social"><a href={site.github} target="_blank" rel="noreferrer">GitHub ↗</a><a href={`mailto:${site.email}`}>Email ↗</a><button id="theme-toggle" aria-label="切换深色主题" title="切换明暗">◐</button></div><small>© {new Date().getFullYear()} Sutton</small></div>
-</aside>
-<main id="main"><slot/><footer class="page-footer"><span>照片会继续增加，故事也是。</span><a href="#main">回到顶部 ↑</a></footer></main>
-<script>
-const menu=document.querySelector<HTMLButtonElement>('#menu-toggle');
-const sidebar=document.querySelector<HTMLElement>('#sidebar');
-function closeMenu(){document.body.classList.remove('menu-open');menu?.setAttribute('aria-expanded','false');menu?.setAttribute('aria-label','打开导航');}
-menu?.addEventListener('click',()=>{const open=document.body.classList.toggle('menu-open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'关闭导航':'打开导航');if(open)sidebar?.querySelector<HTMLElement>('a')?.focus();});
-document.querySelector('#menu-shade')?.addEventListener('click',closeMenu);
-document.addEventListener('keydown',e=>{if(!document.body.classList.contains('menu-open'))return;if(e.key==='Escape'){closeMenu();menu?.focus();}if(e.key==='Tab'){const items=[...sidebar!.querySelectorAll<HTMLElement>('a,button')];const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}});
-const theme=document.querySelector<HTMLButtonElement>('#theme-toggle');
-const themeLabel=()=>theme?.setAttribute('aria-label',document.documentElement.dataset.theme==='dark'?'切换浅色主题':'切换深色主题');themeLabel();
-theme?.addEventListener('click',()=>{const mode=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=mode;try{localStorage.setItem('photo-theme',mode)}catch{}themeLabel()});
-</script>
-</body></html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} — ${site.name}` : site.title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <meta property="og:title" content={title || site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <script is:inline>
+      try { document.documentElement.dataset.theme = localStorage.getItem('photo-theme') || 'light'; } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到内容</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="wordmark" href={url()} aria-label="Sutton 首页">Sutton</a>
+        <nav class="main-nav" aria-label="主导航">
+          {links.map(link => <a href={url(link.path)} aria-current={active === link.key ? 'page' : undefined}>{link.label}</a>)}
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© {new Date().getFullYear()} {site.name}</span>
+        <div class="footer-links">
+          <a href={site.github} target="_blank" rel="noreferrer">GitHub</a>
+          <a href={`mailto:${site.email}`}>联系</a>
+          <button id="theme-toggle" aria-label="切换深色外观">深色外观</button>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const theme = document.querySelector<HTMLButtonElement>('#theme-toggle');
+      function updateThemeLabel() {
+        const dark = document.documentElement.dataset.theme === 'dark';
+        if (theme) {
+          theme.textContent = dark ? '浅色外观' : '深色外观';
+          theme.setAttribute('aria-label', dark ? '切换浅色外观' : '切换深色外观');
+        }
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#161617' : '#ffffff');
+      }
+      updateThemeLabel();
+      theme?.addEventListener('click', () => {
+        const mode = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = mode;
+        try { localStorage.setItem('photo-theme', mode); } catch {}
+        updateThemeLabel();
+      });
+    </script>
+  </body>
+</html>
