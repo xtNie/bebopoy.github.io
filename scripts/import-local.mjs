@@ -85,7 +85,7 @@ export async function importLocal(options, { destination = defaultManifestPath, 
       titleEn: options.titleEn ?? previous?.titleEn ?? options.title ?? slug,
       description: options.description ?? previous?.description ?? '',
       location: options.location ?? previous?.location ?? '',
-      category: options.category ?? previous?.category ?? '日常',
+      category: options.category ?? previous?.category ?? 'Everyday',
       year: options.year ?? previous?.year ?? (options.date ? Number(options.date.slice(0, 4)) : new Date().getFullYear()),
       demo: options.demo ?? previous?.demo ?? false,
       cover: previous?.cover && mergedPhotos.has(previous.cover) ? previous.cover : photos[0].id,
@@ -129,7 +129,7 @@ function argumentsFrom(args) {
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const args = process.argv.slice(2);
   if (args.includes('--help')) {
-    console.log('Usage: node scripts/import-local.mjs --input ../photography-originals/trip --slug trip --title 周末 [--write]\nOptional: --title-en, --description, --location, --category, --year, --date YYYY-MM-DD, --demo\nWithout --write, reads metadata and previews the import without changing files.');
+    console.log('Usage: node scripts/import-local.mjs --input ../photography-originals/trip --slug trip --title Weekend [--write]\nOptional: --title-en, --description, --location, --category, --year, --date YYYY-MM-DD, --demo\nWithout --write, reads metadata and previews the import without changing files.');
   } else {
     Promise.resolve().then(() => importLocal(argumentsFrom(args)))
       .then((report) => console.log(JSON.stringify(report, null, 2)))

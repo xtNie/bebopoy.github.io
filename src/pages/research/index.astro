@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { researchItems, researchTypeLabel, researchLinkLabel, type ResearchLink } from '../../data/research';
+import { url } from '../../data/site';
+---
+
+<Layout title="Research" description="Publications, projects, and public resources." active="research">
+  <header class="page-header">
+    <h1>Research</h1>
+    <p>Publications, projects, and public resources.</p>
+  </header>
+
+  {researchItems.length > 0 ? (
+    <div class="research-list">
+      {researchItems.map((item) => (
+        <article class="research-item">
+          <p class="research-meta"><time datetime={String(item.year)}>{item.year}</time> · {researchTypeLabel[item.type]}{item.status && ` · ${item.status}`}</p>
+          <h2><a href={url(`research/${item.slug}/`)}>{item.title}</a></h2>
+          {item.authors && <p class="research-authors">{item.authors.join(', ')}</p>}
+          {item.venue && <p class="research-venue">{item.venue}</p>}
+          <p class="research-summary">{item.summary}</p>
+          <div class="research-links">
+            <a href={url(`research/${item.slug}/`)}>Details</a>
+            {Object.entries(item.links).map(([kind, href]) => <a href={href} target="_blank" rel="noreferrer">{researchLinkLabel[kind as ResearchLink]} ↗</a>)}
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : <p class="empty-note">No public entries yet.</p>}
+</Layout>

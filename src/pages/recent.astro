@@ -1,11 +1,4 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Photo from '../components/Photo.astro';
-import Lightbox from '../components/Lightbox.astro';
-import {recentPhotos as photos} from '../data/photos';
+import {url} from '../data/site';
+return Astro.redirect(url('photography/recent/'),301);
 ---
-<Layout title="近期" active="recent">
-  <header class="page-header"><h1>近期</h1><p class="lede">{photos.length} 张照片{photos.some(p=>p.album.demo) ? '，含测试样片' : ''}</p></header>
-  <div class="recent-grid">{photos.map((photo,index)=><Photo photo={photo} eager={index<2} index={index}/>)}</div>
-  <Lightbox/>
-</Layout>

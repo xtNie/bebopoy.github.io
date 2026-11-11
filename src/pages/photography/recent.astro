@@ -1,0 +1,13 @@
+---
+import PhotoLayout from '../../layouts/PhotoLayout.astro';
+import Photo from '../../components/Photo.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import {recentPhotos} from '../../data/photos';
+const sizes='(max-width: 560px) calc(100vw - 40px), (max-width: 860px) calc((100vw - 68px) / 2), (max-width: 1160px) calc((100vw - 340px) / 2), 350px';
+---
+<PhotoLayout title="Recent photographs" section="recent">
+  <header class="photo-page-header"><h1>Recent</h1><span class="photo-count">{recentPhotos.length} photographs</span></header>
+  <div class="photo-contact-sheet">{recentPhotos.map((photo,index)=><Photo photo={photo} eager={index<3} sizes={sizes}/>)}</div>
+  {recentPhotos.some(photo=>photo.album.demo)&&<p class="photo-sample-note">Includes sample photographs. Credits are shown above.</p>}
+  <Lightbox/>
+</PhotoLayout>

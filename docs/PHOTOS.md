@@ -8,7 +8,7 @@
 
 ```text
 Codex_Download/
-├── bebopoy.github.io/        # 网站仓库
+├── xtnie.github.io/          # 网站仓库
 └── photography-originals/   # 本机原片，不在网站仓库内
     └── weekend/
         ├── seaside.jpg

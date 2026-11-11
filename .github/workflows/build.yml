@@ -1,4 +1,4 @@
-name: Build and deploy photo journal
+name: Build and deploy personal website
 on:
   push:
     branches: [master]

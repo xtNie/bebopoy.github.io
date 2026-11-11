@@ -1,0 +1,57 @@
+---
+import PhotoLayout from '../../layouts/PhotoLayout.astro';
+import Photo from '../../components/Photo.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import {albums,allPhotos,coverOf} from '../../data/photos';
+import {url,photoUrl} from '../../data/site';
+const categories=[...new Set(albums.map(album=>album.category))];
+const sizes='(max-width: 560px) calc(100vw - 40px), (max-width: 860px) calc((100vw - 68px) / 2), (max-width: 1160px) calc((100vw - 340px) / 2), 350px';
+---
+<PhotoLayout>
+  <header class="photo-page-header">
+    <h1>Photography</h1>
+    <div class="photo-view-switch" role="group" aria-label="Gallery view">
+      <button data-gallery-view="series" aria-pressed="true" aria-controls="photo-series-view">Series</button>
+      <button data-gallery-view="photos" aria-pressed="false" aria-controls="photo-photos-view">Photos</button>
+    </div>
+  </header>
+  <div class="photo-filter-row">
+    <div class="photo-filters" role="group" aria-label="Filter photographs">
+      <button data-gallery-filter="all" aria-pressed="true">All</button>
+      {categories.map(category=><button data-gallery-filter={category} aria-pressed="false">{category}</button>)}
+    </div>
+    <span id="photo-gallery-status" class="photo-count" aria-live="polite">{albums.length} series</span>
+  </div>
+  <div id="photo-series-view" class="photo-contact-sheet">
+    {albums.map((album,index)=>{const photo=coverOf(album);return <article class="photo-album" data-gallery-entry data-category={album.category}>
+      <a class="photo-cover" href={url(`series/${album.slug}/`)} aria-label={`${album.title}, ${album.photos.length} photographs`}>
+        <img src={photoUrl(photo.src)} srcset={photo.variants?.map(v=>`${photoUrl(v.src)} ${v.width}w`).join(', ')} sizes={sizes} alt={photo.alt} width={photo.width} height={photo.height} loading={index<3?'eager':'lazy'} decoding="async"/>
+      </a>
+      <div class="photo-album-caption"><h2><a href={url(`series/${album.slug}/`)}>{album.title}</a></h2><p>{album.photos.length} photos{album.demo?' · Sample':` · ${album.year}`}</p></div>
+    </article>})}
+  </div>
+  <div id="photo-photos-view" class="photo-contact-sheet" hidden>
+    {allPhotos.map(photo=><div data-gallery-entry data-category={photo.album.category}><Photo photo={photo} sizes={sizes}/></div>)}
+  </div>
+  {albums.some(album=>album.demo)&&<p class="photo-sample-note">Sample photographs. Credits are included with each photograph.</p>}
+  <Lightbox/>
+  <script>
+    const views={series:document.querySelector<HTMLElement>('#photo-series-view')!,photos:document.querySelector<HTMLElement>('#photo-photos-view')!};
+    const viewButtons=[...document.querySelectorAll<HTMLButtonElement>('[data-gallery-view]')];
+    const filterButtons=[...document.querySelectorAll<HTMLButtonElement>('[data-gallery-filter]')];
+    let mode:'series'|'photos'='series';
+    let filter='all';
+    function updateGallery(){
+      for(const [key,view] of Object.entries(views)){
+        view.hidden=key!==mode;
+        view.querySelectorAll<HTMLElement>('[data-gallery-entry]').forEach(entry=>{entry.hidden=filter!=='all'&&entry.dataset.category!==filter;});
+      }
+      viewButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.galleryView===mode)));
+      filterButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.galleryFilter===filter)));
+      const count=[...views[mode].querySelectorAll<HTMLElement>('[data-gallery-entry]')].filter(entry=>!entry.hidden).length;
+      document.querySelector('#photo-gallery-status')!.textContent=`${count} ${mode==='series'?'series':count===1?'photo':'photos'}`;
+    }
+    viewButtons.forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.galleryView as 'series'|'photos';updateGallery();}));
+    filterButtons.forEach(button=>button.addEventListener('click',()=>{filter=button.dataset.galleryFilter!;updateGallery();}));
+  </script>
+</PhotoLayout>

@@ -1,11 +1,11 @@
 [
   {
     "slug": "blue-hour",
-    "title": "海岸",
+    "title": "Coast",
     "titleEn": "Coast",
-    "description": "海面、浪花与傍晚的天空。",
+    "description": "Sea, surf, and the evening sky.",
     "location": "",
-    "category": "海岸",
+    "category": "Coast",
     "year": 2026,
     "demo": true,
     "cover": "ocean-clouds",
@@ -13,7 +13,7 @@
       {
         "id": "ocean-clouds",
         "src": "/photos/demo/ocean-clouds-1600.webp",
-        "alt": "傍晚的海面与岩石海岸",
+        "alt": "Rocky coast in the evening.",
         "width": 1600,
         "height": 1067,
         "credit": {
@@ -36,7 +36,7 @@
       {
         "id": "ocean-dusk",
         "src": "/photos/demo/ocean-dusk-1600.webp",
-        "alt": "暮色中的海滩与远山",
+        "alt": "Beach and distant hills at dusk.",
         "width": 1067,
         "height": 1600,
         "credit": {
@@ -60,11 +60,11 @@
   },
   {
     "slug": "city-walks",
-    "title": "街头",
+    "title": "Streets",
     "titleEn": "Streets",
-    "description": "城市街道的白天与夜晚。",
-    "location": "纽约",
-    "category": "街头",
+    "description": "City streets by day and at night.",
+    "location": "New York",
+    "category": "Street",
     "year": 2026,
     "demo": true,
     "cover": "city-day",
@@ -72,7 +72,7 @@
       {
         "id": "city-day",
         "src": "/photos/demo/city-day-1600.webp",
-        "alt": "纽约街道与远处的高层建筑",
+        "alt": "A New York street and distant skyscrapers.",
         "width": 1073,
         "height": 1600,
         "credit": {
@@ -95,7 +95,7 @@
       {
         "id": "city-night",
         "src": "/photos/demo/city-night-1600.webp",
-        "alt": "雨夜中的纽约路口、行人与出租车",
+        "alt": "Pedestrians and taxis at a New York intersection on a rainy night.",
         "width": 1067,
         "height": 1600,
         "credit": {
@@ -119,11 +119,11 @@
   },
   {
     "slug": "mountain-air",
-    "title": "山野",
+    "title": "Mountains",
     "titleEn": "Mountains",
-    "description": "山峰、云雾与树林。",
-    "location": "奥地利、挪威",
-    "category": "山野",
+    "description": "Mountains, mist, and trees.",
+    "location": "Austria, Norway",
+    "category": "Landscape",
     "year": 2018,
     "demo": true,
     "cover": "mountain-layers",
@@ -131,7 +131,7 @@
       {
         "id": "mountain-layers",
         "src": "/photos/demo/mountain-layers-1600.webp",
-        "alt": "薄雾中的奥地利群山与岩壁上的树木",
+        "alt": "Trees on a rocky ridge above mist-covered mountains in Austria.",
         "width": 1233,
         "height": 1600,
         "credit": {
@@ -154,7 +154,7 @@
       {
         "id": "mountain-mist",
         "src": "/photos/demo/mountain-mist-1600.webp",
-        "alt": "挪威山谷中的云雾与积雪",
+        "alt": "Mist and snow in a Norwegian mountain valley.",
         "width": 1600,
         "height": 1067,
         "credit": {

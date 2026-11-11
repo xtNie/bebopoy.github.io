@@ -1,59 +1,64 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { site, url, photoUrl } from '../data/site';
+import { featuredResearch, researchTypeLabel } from '../data/research';
+import { posts } from '../data/posts';
 import { albums, coverOf } from '../data/photos';
-import { url, photoUrl } from '../data/site';
-const categories = [...new Set(albums.map(album => album.category))];
+const selectedAlbums = albums.slice(0, 3);
 ---
 <Layout>
-  <header class="gallery-header">
-    <h1>摄影集</h1>
-    <div class="filters" role="group" aria-label="筛选摄影系列">
-      <button class="active" data-filter="all" aria-pressed="true">全部</button>
-      {categories.map(category => <button data-filter={category} aria-pressed="false">{category}</button>)}
+  <section class="profile-intro" aria-labelledby="name">
+    <div>
+      <h1 id="name">{site.name}</h1>
+      <p class="affiliation">{site.affiliation}</p>
+      <div class="profile-bio">
+        <p>I am currently at the University of Chinese Academy of Sciences. Previously, I studied Intelligent Science and Technology at Shanghai University.</p>
+      </div>
+      <div class="contact-links">
+        <a href={`mailto:${site.email}`}>Email</a>
+        <a href={site.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a href={url('about/')}>About</a>
+      </div>
     </div>
-  </header>
-  <p class="sr-only" id="filter-status" aria-live="polite">{albums.length} 个系列</p>
-  <div class="album-grid">
-    {albums.map((album, index) => {
-      const photo = coverOf(album);
-      return <article class:list={['album-card', { 'album-featured': index === 0 }]} data-category={album.category}>
-        <a class="album-image" href={url(`series/${album.slug}/`)} aria-label={`浏览${album.title}，${album.photos.length}张照片`}>
-          <img
-            src={photoUrl(photo.src)}
-            srcset={photo.variants?.map(variant => `${photoUrl(variant.src)} ${variant.width}w`).join(', ')}
-            sizes={index === 0 ? '(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) calc(100vw - 96px), 1104px' : '(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) calc((100vw - 144px) / 2), 528px'}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            loading={index === 0 ? 'eager' : 'lazy'}
-            fetchpriority={index === 0 ? 'high' : 'auto'}
-            decoding="async"
-          />
-        </a>
-        <div class="album-caption">
-          <a href={url(`series/${album.slug}/`)}><h2>{album.title}</h2></a>
-          <span>{album.photos.length} 张{album.demo ? ' · 样片' : ` · ${album.year}`}</span>
-        </div>
-      </article>;
-    })}
-  </div>
-  {albums.some(album => album.demo) && <p class="demo-note gallery-note">当前展示示例照片，作者与来源见各系列。</p>}
-  <script>
-    const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-    const cards = [...document.querySelectorAll<HTMLElement>('[data-category]')];
-    const grid = document.querySelector('.album-grid');
-    buttons.forEach(button => button.addEventListener('click', () => {
-      buttons.forEach(item => {
-        item.classList.toggle('active', item === button);
-        item.setAttribute('aria-pressed', String(item === button));
-      });
-      let count = 0;
-      cards.forEach(card => {
-        card.hidden = button.dataset.filter !== 'all' && card.dataset.category !== button.dataset.filter;
-        if (!card.hidden) count++;
-      });
-      grid?.classList.toggle('is-filtered', button.dataset.filter !== 'all');
-      document.querySelector('#filter-status')!.textContent = `${count} 个系列`;
-    }));
-  </script>
+  </section>
+
+  <section class="home-section" aria-labelledby="research-heading">
+    <div class="section-label"><h2 id="research-heading">Research</h2><a href={url('research/')}>View research ↗</a></div>
+    <div class="section-body">
+      <p class="interest-text">My interests lie in artificial intelligence and its applications in industrial settings.</p>
+      {featuredResearch.length > 0 && <div class="research-list">
+        {featuredResearch.map(item => <article class="research-item">
+          <p class="research-meta">{item.year} · {researchTypeLabel[item.type]}</p>
+          <h3><a href={url(`research/${item.slug}/`)}>{item.title}</a></h3>
+          {item.authors && <p class="research-authors">{item.authors.join(', ')}</p>}
+          {item.venue && <p class="research-venue">{item.venue}</p>}
+          <p class="research-summary">{item.summary}</p>
+        </article>)}
+      </div>}
+    </div>
+  </section>
+
+  {posts.length > 0 && <section class="home-section" aria-labelledby="writing-heading">
+    <div class="section-label"><h2 id="writing-heading">Writing</h2><a href={url('writing/')}>All writing ↗</a></div>
+    <div class="section-body text-list">
+      {posts.slice(0, 3).map(post => <a class="article-row" href={url(`p/${post.slug}/`)}><h3>{post.title}</h3>{post.date && <time datetime={post.date.slice(0, 10)}>{post.date.slice(0, 10)}</time>}</a>)}
+    </div>
+  </section>}
+
+  {selectedAlbums.length > 0 && <section class="home-section photography-preview" aria-labelledby="photography-heading">
+    <div class="section-label"><h2 id="photography-heading">Photography</h2><a href={url('photography/')}>View collections ↗</a></div>
+    <div class="section-body">
+      <div class="photo-preview-grid">
+        {selectedAlbums.map(album => {
+          const photo = coverOf(album);
+          const thumb = photo.variants?.[0] || photo;
+          return <a href={url(`series/${album.slug}/`)} class="photo-preview-item">
+            <div class="photo-preview-image"><img src={photoUrl(thumb.src)} alt={photo.alt} width={thumb.width} height={thumb.height} loading="lazy" decoding="async" /></div>
+            <span>{album.title}</span>
+          </a>;
+        })}
+      </div>
+      {selectedAlbums.some(album => album.demo) && <p class="sample-note">Sample photographs from Unsplash. Credits accompany each image.</p>}
+    </div>
+  </section>}
 </Layout>

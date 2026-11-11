@@ -1,0 +1,35 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import { researchItems, researchTypeLabel, researchLinkLabel, type ResearchItem, type ResearchLink } from '../../data/research';
+import { url } from '../../data/site';
+
+export const getStaticPaths = (() => researchItems.map((item) => ({ params: { slug: item.slug }, props: { item } }))) satisfies GetStaticPaths;
+interface Props { item: ResearchItem }
+const { item } = Astro.props;
+---
+
+<Layout title={item.title} description={item.summary} active="research">
+  <Fragment slot="head">
+    {item.type === 'paper' && <>
+      <meta name="citation_title" content={item.title} />
+      {item.authors?.map((author) => <meta name="citation_author" content={author} />)}
+      <meta name="citation_publication_date" content={String(item.year)} />
+    </>}
+  </Fragment>
+  <article class="research-detail">
+    <a class="back-link" href={url('research/')}>← Research</a>
+    <header class="page-header">
+      <p class="research-meta">{researchTypeLabel[item.type]} · <time datetime={String(item.year)}>{item.year}</time></p>
+      <h1>{item.title}</h1>
+      {item.authors && <p class="research-authors">{item.authors.join(', ')}</p>}
+      {(item.venue || item.status) && <p class="research-venue">{[item.venue, item.status].filter(Boolean).join(' · ')}</p>}
+    </header>
+    <div class="prose">
+      {item.summary.split(/\n\s*\n/).map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    {Object.keys(item.links).length > 0 && <nav class="research-links" aria-label="Research resources">
+      {Object.entries(item.links).map(([kind, href]) => <a href={href} target="_blank" rel="noreferrer">{researchLinkLabel[kind as ResearchLink]} ↗</a>)}
+    </nav>}
+  </article>
+</Layout>

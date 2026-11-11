@@ -1,11 +1,4 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import {posts} from '../data/posts';
-import {url} from '../data/site';
+import { url } from '../data/site';
+return Astro.redirect(url('writing/'));
 ---
-<Layout title="文字" active="journal">
-  <header class="page-header"><h1>文字</h1><p class="lede">{posts.length} 篇文章</p></header>
-  <section class="text-list">
-    {posts.map(post=><a class="article-row" href={url(`p/${post.slug}/`)}><div><h2>{post.title}</h2><p>{post.tags.join(' / ')}</p></div><time>{post.date.slice(0,10)}</time></a>)}
-  </section>
-</Layout>

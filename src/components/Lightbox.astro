@@ -1,25 +1,44 @@
-<dialog id="lightbox" aria-label="照片查看器">
-<div class="lightbox-bar"><span id="lightbox-counter"></span><div><button id="lightbox-zoom" aria-label="放大或还原">放大 ＋</button><button id="lightbox-close" aria-label="关闭照片">关闭 ×</button></div></div>
-<button id="lightbox-prev" class="lightbox-arrow prev" aria-label="上一张">←</button>
-<div id="lightbox-stage"><img id="lightbox-image" alt=""/></div>
-<button id="lightbox-next" class="lightbox-arrow next" aria-label="下一张">→</button>
-<p id="lightbox-caption" aria-live="polite"></p>
+<dialog id="lightbox" aria-label="Photograph viewer">
+  <div class="lightbox-bar"><span id="lightbox-counter" aria-live="polite"></span><div><button id="lightbox-zoom" aria-label="Zoom in">Zoom in +</button><button id="lightbox-close" aria-label="Close photograph viewer">Close ×</button></div></div>
+  <button id="lightbox-prev" class="lightbox-arrow prev" aria-label="Previous photograph">←</button>
+  <div id="lightbox-stage"><img id="lightbox-image" alt=""/></div>
+  <button id="lightbox-next" class="lightbox-arrow next" aria-label="Next photograph">→</button>
+  <p id="lightbox-caption"></p>
 </dialog>
 <script>
-const dialog=document.querySelector<HTMLDialogElement>('#lightbox')!;
-const img=document.querySelector<HTMLImageElement>('#lightbox-image')!;
-const stage=document.querySelector<HTMLElement>('#lightbox-stage')!;
-const triggers=[...document.querySelectorAll<HTMLButtonElement>('[data-photo]')];
-let index=0;let opener:HTMLElement|null=null;
-const zoomButton=document.querySelector<HTMLButtonElement>('#lightbox-zoom')!;
-function show(n:number){index=(n+triggers.length)%triggers.length;const item=triggers[index];img.src=item.dataset.src!;img.alt=item.dataset.alt!;document.querySelector('#lightbox-caption')!.textContent=item.dataset.caption!;document.querySelector('#lightbox-counter')!.textContent=`${String(index+1).padStart(2,'0')} / ${String(triggers.length).padStart(2,'0')}`;stage.classList.remove('zoomed');stage.scrollTo(0,0);zoomButton.textContent='放大 ＋';}
-function close(){dialog.close();document.body.classList.remove('lightbox-open');opener?.focus()}
-triggers.forEach((trigger,i)=>trigger.addEventListener('click',()=>{opener=trigger;show(i);dialog.showModal();document.body.classList.add('lightbox-open')}));
-document.querySelector('#lightbox-close')?.addEventListener('click',close);
-dialog.addEventListener('cancel',e=>{e.preventDefault();close()});
-document.querySelector('#lightbox-prev')?.addEventListener('click',()=>show(index-1));
-document.querySelector('#lightbox-next')?.addEventListener('click',()=>show(index+1));
-zoomButton.addEventListener('click',()=>{const zoom=stage.classList.toggle('zoomed');zoomButton.textContent=zoom?'还原 −':'放大 ＋'});
-dialog.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();show(index-1)}if(e.key==='ArrowRight'){e.preventDefault();show(index+1)}});
-let touchX=0;stage.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX},{passive:true});stage.addEventListener('touchend',e=>{if(stage.classList.contains('zoomed'))return;const dx=e.changedTouches[0].screenX-touchX;if(Math.abs(dx)>70)show(index+(dx<0?1:-1))},{passive:true});
+  const dialog=document.querySelector<HTMLDialogElement>('#lightbox')!;
+  const image=document.querySelector<HTMLImageElement>('#lightbox-image')!;
+  const stage=document.querySelector<HTMLElement>('#lightbox-stage')!;
+  const triggers=[...document.querySelectorAll<HTMLButtonElement>('[data-photo]')];
+  const zoomButton=document.querySelector<HTMLButtonElement>('#lightbox-zoom')!;
+  const previous=document.querySelector<HTMLButtonElement>('#lightbox-prev')!;
+  const next=document.querySelector<HTMLButtonElement>('#lightbox-next')!;
+  let activePhotos=triggers;
+  let index=0;
+  let opener:HTMLElement|null=null;
+  function setZoom(zoom:boolean){stage.classList.toggle('zoomed',zoom);zoomButton.textContent=zoom?'Fit −':'Zoom in +';zoomButton.setAttribute('aria-label',zoom?'Fit photograph to screen':'Zoom in');}
+  function show(position:number){
+    if(!activePhotos.length)return;
+    index=(position+activePhotos.length)%activePhotos.length;
+    const item=activePhotos[index];
+    image.src=item.dataset.src!;
+    image.alt=item.dataset.alt!;
+    document.querySelector('#lightbox-caption')!.textContent=item.dataset.caption!;
+    document.querySelector('#lightbox-counter')!.textContent=`${index+1} / ${activePhotos.length}`;
+    previous.disabled=next.disabled=activePhotos.length<2;
+    setZoom(false);stage.scrollTo(0,0);
+  }
+  function close(){dialog.close();document.body.classList.remove('lightbox-open');opener?.focus();}
+  triggers.forEach(trigger=>trigger.addEventListener('click',()=>{
+    activePhotos=triggers.filter(item=>item.getClientRects().length>0);
+    opener=trigger;show(activePhotos.indexOf(trigger));dialog.showModal();document.body.classList.add('lightbox-open');
+  }));
+  document.querySelector('#lightbox-close')?.addEventListener('click',close);
+  dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
+  previous.addEventListener('click',()=>show(index-1));next.addEventListener('click',()=>show(index+1));
+  zoomButton.addEventListener('click',()=>setZoom(!stage.classList.contains('zoomed')));
+  dialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'){event.preventDefault();show(index-1);}if(event.key==='ArrowRight'){event.preventDefault();show(index+1);}});
+  let touchX=0;let touchY=0;
+  stage.addEventListener('touchstart',event=>{touchX=event.changedTouches[0].screenX;touchY=event.changedTouches[0].screenY;},{passive:true});
+  stage.addEventListener('touchend',event=>{if(stage.classList.contains('zoomed'))return;const dx=event.changedTouches[0].screenX-touchX;const dy=event.changedTouches[0].screenY-touchY;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy))show(index+(dx<0?1:-1));},{passive:true});
 </script>
