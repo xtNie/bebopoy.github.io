@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import {url} from '../data/site';
+import { url } from '../data/site';
 ---
-<Layout title="页面不存在">
-  <header class="page-header"><h1>页面不存在</h1><p class="lede">404</p></header>
-  <div class="prose"><a href={url()}>返回首页</a></div>
+<Layout title="Page not found">
+  <header class="page-header"><h1>Page not found</h1><p>The page may have moved or no longer exists.</p></header>
+  <div class="prose"><a href={url()}>Return home</a></div>
 </Layout>

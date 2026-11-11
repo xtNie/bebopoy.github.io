@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { posts } from '../data/posts';
+import { url } from '../data/site';
+---
+<Layout title="Writing" active="writing">
+  <header class="page-header"><h1>Writing</h1><p>Notes and essays.</p></header>
+  {posts.length > 0 ? <section class="text-list">
+    {posts.map(post => <a class="article-row" href={url(`p/${post.slug}/`)}><div><h2>{post.title}</h2>{post.description && <p>{post.description}</p>}{post.tags.length > 0 && <p>{post.tags.join(' / ')}</p>}</div>{post.date && <time datetime={post.date.slice(0, 10)}>{post.date.slice(0, 10)}</time>}</a>)}
+  </section> : <p class="empty-note">No published writing yet.</p>}
+</Layout>

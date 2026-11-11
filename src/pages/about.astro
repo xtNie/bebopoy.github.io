@@ -1,14 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import {site,url} from '../data/site';
+import { site } from '../data/site';
 ---
-<Layout title="关于" active="about">
-  <header class="page-header"><h1>关于</h1></header>
+<Layout title="About" active="about">
+  <header class="page-header"><h1>About</h1></header>
   <article class="prose">
-    <p>我是 Sutton。这是我的个人网站，用来放照片和写文字。</p>
-    <p>图库目前使用 Unsplash 测试样片。照片下方附有作者和来源。</p>
-    <h2>联系</h2>
-    <p><a href={site.github} target="_blank" rel="noreferrer">GitHub</a> &nbsp; / &nbsp; <a href={`mailto:${site.email}`}>Email</a></p>
-    <p><a href={url('links/')}>友情链接</a></p>
+    <p>I am {site.name}, currently at the University of Chinese Academy of Sciences. Previously, I studied Intelligent Science and Technology at Shanghai University.</p>
+    <p>My interests include artificial intelligence and its applications in industrial settings.</p>
+    <p>Outside of my academic interests, I enjoy photography and music, and I am learning to play the bass.</p>
+    <h2>Contact</h2>
+    <p><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={site.github} target="_blank" rel="noreferrer">GitHub ↗</a></p>
   </article>
 </Layout>

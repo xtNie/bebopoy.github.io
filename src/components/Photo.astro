@@ -1,13 +1,14 @@
 ---
 import {photoUrl} from '../data/site';
 import type {Photo} from '../data/photos';
-interface Props {photo:Photo;eager?:boolean;index?:number}
-const {photo,eager=false}=Astro.props;
+interface Props {photo:Photo;eager?:boolean;index?:number;sizes?:string}
+const {photo,eager=false,sizes='(max-width: 760px) calc(100vw - 40px), 75vw'}=Astro.props;
 ---
 <figure class="photo-figure">
-<button class="photo-button" data-photo data-src={photoUrl(photo.src)} data-alt={photo.alt} data-caption={photo.alt} aria-label={`放大照片：${photo.alt}`}>
-<img src={photoUrl(photo.src)} srcset={photo.variants?.map(v=>`${photoUrl(v.src)} ${v.width}w`).join(', ')} sizes="(max-width: 600px) calc(100vw - 48px), (max-width: 900px) 90vw, 75vw" alt={photo.alt} width={photo.width} height={photo.height} loading={eager?'eager':'lazy'} decoding="async" fetchpriority={eager?'high':'auto'}/><span class="expand-hint" aria-hidden="true">↗</span>
-</button>
-<figcaption><span>{photo.alt}</span>{photo.credit && <a href={photo.credit.url} target="_blank" rel="noreferrer">{photo.credit.name} ↗</a>}</figcaption>
-{(photo.camera||photo.settings)&&<p class="exif">{[photo.camera,photo.lens,photo.settings].filter(Boolean).join(' · ')}</p>}
+  <button class="photo-button" data-photo data-src={photoUrl(photo.src)} data-alt={photo.alt} data-caption={photo.alt} aria-label={`Enlarge photograph: ${photo.alt}`}>
+    <img src={photoUrl(photo.src)} srcset={photo.variants?.map(v=>`${photoUrl(v.src)} ${v.width}w`).join(', ')} sizes={sizes} alt={photo.alt} width={photo.width} height={photo.height} loading={eager?'eager':'lazy'} decoding="async" fetchpriority={eager?'high':'auto'}/>
+    <span class="expand-hint" aria-hidden="true">↗</span>
+  </button>
+  <figcaption><span>{photo.alt}</span>{photo.credit&&<a href={photo.credit.url} target="_blank" rel="noreferrer">{photo.credit.name} ↗</a>}</figcaption>
+  {(photo.camera||photo.settings)&&<p class="exif">{[photo.camera,photo.lens,photo.settings].filter(Boolean).join(' · ')}</p>}
 </figure>

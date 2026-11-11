@@ -1,18 +1,42 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import PhotoLayout from '../../layouts/PhotoLayout.astro';
 import Photo from '../../components/Photo.astro';
 import Lightbox from '../../components/Lightbox.astro';
 import {albums} from '../../data/photos';
 import {url} from '../../data/site';
-export function getStaticPaths(){return albums.map((album,i)=>({params:{slug:album.slug},props:{album,i}}))}
-const {album,i}=Astro.props;
-const next=albums[(i+1)%albums.length];
-const details=[album.location,`${album.photos.length} 张照片`,album.demo?'示例照片':String(album.year)].filter(Boolean).join(' · ');
+export function getStaticPaths(){return albums.map((album,index)=>({params:{slug:album.slug},props:{album,index}}));}
+const {album,index}=Astro.props;
+const previous=albums[(index-1+albums.length)%albums.length];
+const next=albums[(index+1)%albums.length];
+const details=[album.location,`${album.photos.length} photographs`,album.demo?'Sample series':String(album.year)].filter(Boolean).join(' · ');
+const gridSizes='(max-width: 560px) calc(100vw - 40px), (max-width: 860px) calc((100vw - 68px) / 2), (max-width: 1160px) calc((100vw - 340px) / 2), 350px';
+const largeSizes='(max-width: 860px) calc(100vw - 40px), (max-width: 1440px) calc(100vw - 320px), 1120px';
 ---
-<Layout title={album.title} description={album.description}>
-  <a class="back-link" href={url()}>← 摄影集</a>
-  <header class="series-header"><h1>{album.title}</h1><p class="series-description">{album.description}</p><p class="series-details">{details}</p></header>
-  <div class="series-photos">{album.photos.map((photo,index)=><Photo photo={photo} eager={index===0} index={index}/>)}</div>
-  <a class="next-series" href={url(`series/${next.slug}/`)}><span>下一组</span><span>{next.title} <span>→</span></span></a>
+<PhotoLayout title={album.title} description={album.description} slug={album.slug}>
+  <header class="photo-page-header photo-detail-header"><div><h1>{album.title}</h1><p>{details}</p></div></header>
+  <div class="photo-detail-tools">
+    <p class="photo-description">{album.description}</p>
+    <div class="photo-view-switch" role="group" aria-label="Photograph layout">
+      <button data-series-view="overview" aria-pressed="true" aria-controls="photo-series-grid">Overview</button>
+      <button data-series-view="large" aria-pressed="false" aria-controls="photo-series-grid">Large</button>
+    </div>
+  </div>
+  <div id="photo-series-grid" class="photo-contact-sheet photo-series-grid" data-grid-sizes={gridSizes} data-large-sizes={largeSizes}>
+    {album.photos.map((photo,index)=><Photo photo={photo} eager={index<3} sizes={gridSizes}/>)}
+  </div>
+  {albums.length>1&&<nav class="photo-neighbours" aria-label="Adjacent series">
+    <a href={url(`series/${previous.slug}/`)}><span>← Previous</span><strong>{previous.title}</strong></a>
+    <a href={url(`series/${next.slug}/`)}><span>Next →</span><strong>{next.title}</strong></a>
+  </nav>}
   <Lightbox/>
-</Layout>
+  <script>
+    const grid=document.querySelector<HTMLElement>('#photo-series-grid')!;
+    const buttons=[...document.querySelectorAll<HTMLButtonElement>('[data-series-view]')];
+    buttons.forEach(button=>button.addEventListener('click',()=>{
+      const large=button.dataset.seriesView==='large';
+      grid.classList.toggle('is-large',large);
+      buttons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+      grid.querySelectorAll<HTMLImageElement>('img').forEach(image=>{image.sizes=(large?grid.dataset.largeSizes:grid.dataset.gridSizes)!;});
+    }));
+  </script>
+</PhotoLayout>

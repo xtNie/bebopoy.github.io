@@ -1,0 +1,23 @@
+---
+import Layout from './Layout.astro';
+import '../styles/photography.css';
+import {albums} from '../data/photos';
+import {url} from '../data/site';
+interface Props {title?:string;description?:string;section?:'series'|'recent';slug?:string}
+const {title='Photography',description,section='series',slug}=Astro.props;
+---
+<Layout title={title} description={description} active="photography" wide={true}>
+  <div class="photo-shell">
+    <aside class="photo-sidebar" aria-label="Photography navigation">
+      <a class="photo-sidebar-title" href={url('photography/')}>Photography</a>
+      <nav class="photo-section-nav" aria-label="Photography views">
+        <a href={url('photography/')} aria-current={section==='series'&&!slug?'page':undefined}>All series</a>
+        <a href={url('photography/recent/')} aria-current={section==='recent'?'page':undefined}>Recent</a>
+      </nav>
+      <nav class="photo-series-nav" aria-label="Photo series">
+        {albums.map(album=><a href={url(`series/${album.slug}/`)} aria-current={slug===album.slug?'page':undefined}><span>{album.title}</span><span>{album.photos.length}</span></a>)}
+      </nav>
+    </aside>
+    <section class="photo-content" aria-label={title}><slot/></section>
+  </div>
+</Layout>

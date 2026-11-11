@@ -1,10 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import {url} from '../data/site';
-export function getStaticPaths(){return ['blog','record','life','search','tags','projects'].map(legacy=>({params:{legacy}}))}
-const target=url(Astro.params.legacy==='projects'?'links/':'journal/');
+import { url } from '../data/site';
+export function getStaticPaths() { return ['blog', 'record', 'life', 'search', 'tags', 'projects'].map(legacy => ({ params: { legacy } })); }
+return Astro.redirect(url(Astro.params.legacy === 'projects' ? 'research/' : 'writing/'));
 ---
-<Layout title="页面已迁移">
-  <header class="page-header"><h1>页面已迁移</h1></header>
-  <div class="prose"><a href={target}>查看内容</a></div>
-</Layout>

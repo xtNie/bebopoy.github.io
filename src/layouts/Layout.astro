@@ -1,18 +1,18 @@
 ---
 import '../styles/global.css';
 import { site, url } from '../data/site';
-interface Props { title?: string; description?: string; active?: string }
-const { title, description = site.description, active = 'series' } = Astro.props;
+interface Props { title?: string; description?: string; active?: string; wide?: boolean }
+const { title, description = site.description, active = 'home', wide = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const links = [
-  { key: 'series', label: '摄影集', path: '' },
-  { key: 'recent', label: '近期', path: 'recent/' },
-  { key: 'journal', label: '文字', path: 'journal/' },
-  { key: 'about', label: '关于', path: 'about/' },
+  { key: 'research', label: 'Research', path: 'research/' },
+  { key: 'writing', label: 'Writing', path: 'writing/' },
+  { key: 'photography', label: 'Photography', path: 'photography/' },
+  { key: 'about', label: 'About', path: 'about/' },
 ];
 ---
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,28 +24,31 @@ const links = [
     <meta property="og:title" content={title || site.title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="author" content={site.name} />
+    <slot name="head" />
     <script is:inline>
       try { document.documentElement.dataset.theme = localStorage.getItem('photo-theme') || 'light'; } catch {}
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到内容</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="header-inner">
-        <a class="wordmark" href={url()} aria-label="Sutton 首页">Sutton</a>
-        <nav class="main-nav" aria-label="主导航">
+        <a class="wordmark" href={url()} aria-label={`${site.name} — home`}>{site.name}</a>
+        <nav class="main-nav" aria-label="Main navigation">
           {links.map(link => <a href={url(link.path)} aria-current={active === link.key ? 'page' : undefined}>{link.label}</a>)}
         </nav>
       </div>
     </header>
-    <main id="main"><slot /></main>
+    <main id="main" class:list={{ wide }}><slot /></main>
     <footer class="site-footer">
       <div class="footer-inner">
         <span>© {new Date().getFullYear()} {site.name}</span>
         <div class="footer-links">
           <a href={site.github} target="_blank" rel="noreferrer">GitHub</a>
-          <a href={`mailto:${site.email}`}>联系</a>
-          <button id="theme-toggle" aria-label="切换深色外观">深色外观</button>
+          <a href={`mailto:${site.email}`}>Email</a>
+          <button id="theme-toggle" aria-label="Switch to dark appearance">Dark appearance</button>
         </div>
       </div>
     </footer>
@@ -54,8 +57,8 @@ const links = [
       function updateThemeLabel() {
         const dark = document.documentElement.dataset.theme === 'dark';
         if (theme) {
-          theme.textContent = dark ? '浅色外观' : '深色外观';
-          theme.setAttribute('aria-label', dark ? '切换浅色外观' : '切换深色外观');
+          theme.textContent = dark ? 'Light appearance' : 'Dark appearance';
+          theme.setAttribute('aria-label', dark ? 'Switch to light appearance' : 'Switch to dark appearance');
         }
         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#161617' : '#ffffff');
       }

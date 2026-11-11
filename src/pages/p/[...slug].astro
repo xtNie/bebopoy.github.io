@@ -1,6 +1,13 @@
 ---
-import Layout from '../../layouts/Layout.astro';import {posts} from '../../data/posts';import {url} from '../../data/site';
-export function getStaticPaths(){return posts.map(post=>({params:{slug:post.slug},props:{post}}))}
-const {post}=Astro.props;const Content=post.entry.Content;
+import Layout from '../../layouts/Layout.astro';
+import { posts } from '../../data/posts';
+import { url } from '../../data/site';
+export function getStaticPaths() { return posts.map(post => ({ params: { slug: post.slug }, props: { post } })); }
+const { post } = Astro.props;
+const Content = post.entry.Content;
 ---
-<Layout title={post.title} active="journal"><a class="back-link" href={url('journal/')}>← 全部文字</a><header class="series-header"><h1>{post.title}</h1><p class="series-details">{post.date.slice(0,10)}</p></header><article class="prose"><Content/></article></Layout>
+<Layout title={post.title} description={post.description} active="writing">
+  <a class="back-link" href={url('writing/')}>← All writing</a>
+  <header class="page-header"><h1>{post.title}</h1>{post.date && <p><time datetime={post.date.slice(0, 10)}>{post.date.slice(0, 10)}</time></p>}</header>
+  <article class="prose"><Content /></article>
+</Layout>
