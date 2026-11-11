@@ -4,4 +4,8 @@ import Photo from '../components/Photo.astro';
 import Lightbox from '../components/Lightbox.astro';
 import {recentPhotos as photos} from '../data/photos';
 ---
-<Layout title="近期" active="recent"><header class="collection-header"><div><p class="eyebrow">RECENT FRAMES</p><h1>一些最近的瞬间。</h1><p class="lede">照片按拍摄时间排列，未标日期的片段收在最后。</p></div><span class="edition">{String(photos.length).padStart(2,'0')} FRAMES</span></header>{photos.some(p=>p.album.demo)&&<p class="demo-note recent-demo">示例照片用于版式测试，非站主作品；作者与来源见照片下方。</p>}<div class="recent-grid">{photos.map((photo,index)=><Photo photo={photo} eager={index<2} index={index}/>)}</div><Lightbox/></Layout>
+<Layout title="近期" active="recent">
+  <header class="page-header"><h1>近期</h1><p class="lede">{photos.length} 张照片{photos.some(p=>p.album.demo) ? '，含测试样片' : ''}</p></header>
+  <div class="recent-grid">{photos.map((photo,index)=><Photo photo={photo} eager={index<2} index={index}/>)}</div>
+  <Lightbox/>
+</Layout>
